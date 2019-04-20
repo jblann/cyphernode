@@ -1,7 +1,7 @@
 {
   "definitions": {},
   "$schema": "http://json-schema.org/draft-07/schema#",
-  "$id": "http://cyphernode.io/config-v0.1.0.json",
+  "$id": "http://cyphernode.io/config-v0.2.0.json",
   "type": "object",
   "title": "Cyphernode config file structure v0.1.0",
   "required": [
@@ -9,8 +9,7 @@
     "features",
     "enablehelp",
     "net",
-    "xpub",
-    "derivation_path",
+    "use_xpub",
     "installer_mode",
     "run_as_different_user",
     "username",
@@ -19,30 +18,29 @@
     "bitcoin_rpcpassword",
     "bitcoin_prune",
     "bitcoin_datapath",
-    "bitcoin_node_ip",
     "bitcoin_mode",
     "bitcoin_expose",
-    "lightning_expose",
-    "gatekeeper_apiproperties",
     "gatekeeper_keys",
     "gatekeeper_sslcert",
     "gatekeeper_sslkey",
     "gatekeeper_cns",
     "proxy_datapath",
+    "lightning_expose",
     "lightning_implementation",
     "lightning_datapath",
     "lightning_nodename",
     "lightning_nodecolor",
     "otsclient_datapath",
+    "traefik_datapath",
     "default_username",
     "installer_cleanup"
   ],
   "properties": {
     "__version": {
       "type": "string",
-      "enum": ["0.1.0"],
-      "default": "0.1.0",
-      "examples": ["0.1.0"]
+      "enum": ["0.2.0"],
+      "default": "0.2.0",
+      "examples": ["0.2.0"]
     },
     "default_username": {
       "type": "string",
@@ -87,6 +85,13 @@
       "examples": [
         "testnet"
       ]
+    },
+    "use_xpub": {
+      "$id": "#/properties/use_xpub",
+      "type": "boolean",
+      "title": "Use xpub key?",
+      "default": false,
+      "examples": [false]
     },
     "xpub": {
       "$id": "#/properties/xpub",
@@ -222,11 +227,19 @@
         "/tmp/cyphernode/otsclient"
       ]
     },
-    "bitcoin_node_ip": {
-      "$id": "#/properties/bitcoin_node_ip",
+    "traefik_datapath": {
+      "$id": "#/properties/traefik_datapath",
+      "type": "string",
+      "title": "Traefik datapath",
+      "examples": [
+        "/tmp/cyphernode/traefik"
+      ]
+    },
+    "lightning_external_ip": {
+      "$id": "#/properties/lightning_external_ip",
       "type": "string",
       "format": "ipv4",
-      "title": "Bitcoin node ip",
+      "title": "External lightning node ip",
       "examples": [
         "123.123.123.123"
       ]
@@ -260,14 +273,6 @@
         false
       ]
     },
-    "gatekeeper_apiproperties": {
-      "$id": "#/properties/gatekeeper_apiproperties",
-      "type": "string",
-      "title": "API properties",
-      "examples": [
-        "# Stats can:\naction_getblockchaininfo=stats\n\n# Watcher can:\naction_watch=watcher\naction_unwatch=watcher\naction_watchxpub=watcher\naction_unwatchxpubbyxpub=watcher\naction_unwatchxpubbylabel=watcher\naction_getactivewatchesbyxpub=watcher\naction_getactivewatchesbylabel=watcher\naction_getactivexpubwatches=watcher\naction_watchtxid=watcher\naction_getactivewatches=watcher\naction_getbestblockhash=watcher\naction_getbestblockinfo=watcher\naction_getblockinfo=watcher\naction_gettransaction=watcher\naction_ln_getinfo=watcher\naction_ln_create_invoice=watcher\naction_ln_getconnectionstring=watcher\naction_ln_decodebolt11=watcher\n\n# Spender can do what the watcher can do, plus:\naction_getbalance=spender\naction_getbalancebyxpub=spender\naction_getbalancebyxpublabel=spender\naction_getnewaddress=spender\naction_spend=spender\naction_addtobatch=spender\naction_batchspend=spender\naction_deriveindex=spender\naction_derivepubpath=spender\naction_ln_pay=spender\naction_ln_newaddr=spender\naction_ots_stamp=spender\naction_ots_getfile=spender\naction_ln_getinvoice=spender\naction_ln_decodebolt11=spender\naction_ln_connectfund=spender\n\n# Admin can do what the spender can do, plus:\n\n\n# Should be called from inside the Docker network only:\naction_conf=internal\naction_newblock=internal\naction_executecallbacks=internal\naction_ots_backoffice=internal"
-      ]
-    },
     "gatekeeper_keys": {
       "$id": "#/properties/gatekeeper_keys",
       "type": "object",
@@ -291,9 +296,10 @@
           },
           "examples": [
             [
-              "kapi_id=\"001\";kapi_key=\"a27f9e73fdde6a5005879c273c9aea5e8d917eec77bbdfd73272c0af9b4c6b7a\";kapi_groups=\"watcher\";eval ugroups_${kapi_id}=${kapi_groups};eval ukey_${kapi_id}=${kapi_key}",
-              "kapi_id=\"002\";kapi_key=\"fe58ddbb66d7302a7087af3242a98b6326c51a257f5eab1c06bb8cc02e25890d\";kapi_groups=\"watcher,spender\";eval ugroups_${kapi_id}=${kapi_groups};eval ukey_${kapi_id}=${kapi_key}",
-              "kapi_id=\"003\";kapi_key=\"f0b8bb52f4c7007938757bcdfc73b452d6ce08cc0c660ce57c5464ae95f35417\";kapi_groups=\"watcher,spender,admin\";eval ugroups_${kapi_id}=${kapi_groups};eval ukey_${kapi_id}=${kapi_key}"
+              "kapi_id=\"000\";kapi_key=\"a27f9e73fdde6a5005879c259c9aea5e8d917eec77bbdfd73272c0af9b4c6b7a\";kapi_groups=\"stats\";eval ugroups_${kapi_id}=${kapi_groups};eval ukey_${kapi_id}=${kapi_key}",
+              "kapi_id=\"001\";kapi_key=\"a27f9e73fdde6a5005879c273c9aea5e8d917eec77bbdfd73272c0af9b4c6b7a\";kapi_groups=\"stats,watcher\";eval ugroups_${kapi_id}=${kapi_groups};eval ukey_${kapi_id}=${kapi_key}",
+              "kapi_id=\"002\";kapi_key=\"fe58ddbb66d7302a7087af3242a98b6326c51a257f5eab1c06bb8cc02e25890d\";kapi_groups=\"stats,watcher,spender\";eval ugroups_${kapi_id}=${kapi_groups};eval ukey_${kapi_id}=${kapi_key}",
+              "kapi_id=\"003\";kapi_key=\"f0b8bb52f4c7007938757bcdfc73b452d6ce08cc0c660ce57c5464ae95f35417\";kapi_groups=\"stats,watcher,spender,admin\";eval ugroups_${kapi_id}=${kapi_groups};eval ukey_${kapi_id}=${kapi_key}"
             ]
           ]
         },
@@ -307,6 +313,7 @@
           },
           "examples": [
             [
+              "000=a27f9e73fdde6a5005879c259c9aea5e8d917eec77bbdfd73272c0af9b4c6b7a",
               "001=a27f9e73fdde6a5005879c273c9aea5e8d917eec77bbdfd73272c0af9b4c6b7a",
               "002=fe58ddbb66d7302a7087af3242a98b6326c51a257f5eab1c06bb8cc02e25890d",
               "003=f0b8bb52f4c7007938757bcdfc73b452d6ce08cc0c660ce57c5464ae95f35417"
