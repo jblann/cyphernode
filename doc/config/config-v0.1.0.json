@@ -21,18 +21,21 @@
     "bitcoin_node_ip",
     "bitcoin_mode",
     "bitcoin_expose",
-    "lightning_expose",
     "gatekeeper_apiproperties",
     "gatekeeper_keys",
     "gatekeeper_sslcert",
     "gatekeeper_sslkey",
     "gatekeeper_cns",
-    "proxy_datapath",
+    "gatekeeper_clientkeyspassword",
+    "gatekeeper_clientkeyspassword_c",
+    "gatekeeper_statuspw",
+    "lightning_expose",
     "lightning_implementation",
     "lightning_datapath",
     "lightning_nodename",
     "lightning_nodecolor",
-    "otsclient_datapath"
+    "otsclient_datapath",
+    "proxy_datapath"
   ],
   "allOf": [
     {
@@ -334,7 +337,25 @@
           ]
         }
       }
-    }
+    },
+    "gatekeeper_clientkeyspassword": {
+      "$id": "#/properties/gatekeeper_clientkeyspassword",
+      "type": "string",
+      "title": "Password for the encrypted client keys archive",
+      "default": ""
+    },
+    "gatekeeper_clientkeyspassword_c": {
+      "$id": "#/properties/gatekeeper_clientkeyspassword",
+      "type": "string",
+      "title": "Password for the encrypted client keys archive, verified",
+      "default": ""
+    },
+    "gatekeeper_statuspw": {
+      "$id": "#/properties/adminhash",
+      "type": "string",
+      "title": "MD5 hash of admin password",
+      "default": ""
+    },
     "gatekeeper_sslcert": {
       "$id": "#/properties/gatekeeper_sslcert",
       "type": "string",

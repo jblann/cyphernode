@@ -12,6 +12,7 @@
     "installer_mode",
     "run_as_different_user",
     "docker_mode",
+    "adminhash",
     "bitcoin_rpcuser",
     "bitcoin_rpcpassword",
     "bitcoin_prune",
@@ -22,12 +23,13 @@
     "gatekeeper_sslcert",
     "gatekeeper_sslkey",
     "gatekeeper_cns",
-    "proxy_datapath",
+    "gatekeeper_clientkeyspassword",
     "lightning_expose",
     "lightning_implementation",
     "lightning_datapath",
     "lightning_nodename",
     "lightning_nodecolor",
+    "proxy_datapath",
     "otsclient_datapath",
     "traefik_datapath"
   ],
@@ -393,6 +395,18 @@
       "examples": [
         "myhost.mydomain.com,*.myotherdomain.com,123.123.123.123"
       ]
+    },
+    "gatekeeper_clientkeyspassword": {
+      "$id": "#/properties/gatekeeper_clientkeyspassword",
+      "type": "string",
+      "title": "Password for the encrypted client keys archive",
+      "default": ""
+    },
+    "adminhash": {
+      "$id": "#/properties/adminhash",
+      "type": "string",
+      "title": "Bcrypted hash of admin password",
+      "default": ""
     },
     "lightning_implementation": {
       "$id": "#/properties/lightning_implementation",
