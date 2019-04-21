@@ -411,6 +411,7 @@
     "lightning_nodecolor": {
       "$id": "#/properties/lightning_nodecolor",
       "type": "string",
+      "pattern": "^[0-9A-Fa-f]{6}$",
       "title": "The lightning node color",
       "default": "ff0000",
       "examples": [
