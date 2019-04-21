@@ -7,7 +7,6 @@
   "required": [
     "__version",
     "features",
-    "enablehelp",
     "net",
     "xpub",
     "derivation_path",
@@ -33,9 +32,41 @@
     "lightning_datapath",
     "lightning_nodename",
     "lightning_nodecolor",
-    "otsclient_datapath",
-    "default_username",
-    "installer_cleanup"
+    "otsclient_datapath"
+  ],
+  "allOf": [
+    {
+      "if": {
+        "properties": {
+          "run_as_different_user": {
+            "enum": [
+              true
+            ]
+          }
+        }
+      },
+      "then": {
+        "required": [
+          "username"
+        ]
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "bitcoin_prune": {
+            "enum": [
+              true
+            ]
+          }
+        }
+      },
+      "then": {
+        "required": [
+          "bitcoin_prune_size"
+        ]
+      }
+    }
   ],
   "properties": {
     "__version": {
@@ -43,11 +74,6 @@
       "enum": ["0.1.0"],
       "default": "0.1.0",
       "examples": ["0.1.0"]
-    },
-    "default_username": {
-      "type": "string",
-      "default": "",
-      "examples": ["johndoe"]
     },
     "features": {
       "$id": "#/properties/features",
@@ -68,12 +94,6 @@
           "otsclient"
         ]
       }
-    },
-    "enablehelp": {
-      "$id": "#/properties/enablehelp",
-      "type": "boolean",
-      "title": "Enable help?",
-      "default": true
     },
     "net": {
       "$id": "#/properties/net",
@@ -314,16 +334,7 @@
           ]
         }
       }
-    },
-    "installer_cleanup": {
-      "$id": "#/properties/installer_cleanup",
-      "type": "boolean",
-      "title": "Cleanup installer after setup",
-      "default": false,
-      "examples": [
-        false
-      ]
-    },
+    }
     "gatekeeper_sslcert": {
       "$id": "#/properties/gatekeeper_sslcert",
       "type": "string",

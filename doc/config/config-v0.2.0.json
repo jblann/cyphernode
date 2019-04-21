@@ -3,16 +3,14 @@
   "$schema": "http://json-schema.org/draft-07/schema#",
   "$id": "http://cyphernode.io/config-v0.2.0.json",
   "type": "object",
-  "title": "Cyphernode config file structure v0.1.0",
+  "title": "Cyphernode config file structure v0.2.0",
   "required": [
     "__version",
     "features",
-    "enablehelp",
     "net",
     "use_xpub",
     "installer_mode",
     "run_as_different_user",
-    "username",
     "docker_mode",
     "bitcoin_rpcuser",
     "bitcoin_rpcpassword",
@@ -31,21 +29,69 @@
     "lightning_nodename",
     "lightning_nodecolor",
     "otsclient_datapath",
-    "traefik_datapath",
-    "default_username",
-    "installer_cleanup"
+    "traefik_datapath"
+  ],
+  "allOf": [
+    {
+      "if": {
+        "properties": {
+          "run_as_different_user": {
+            "enum": [
+              true
+            ]
+          }
+        }
+      },
+      "then": {
+        "required": [
+          "username"
+        ]
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "use_xpub": {
+            "enum": [
+              true
+            ]
+          }
+        }
+      },
+      "then": {
+        "required": [
+          "xpub",
+          "derivation_path"
+        ]
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "bitcoin_prune": {
+            "enum": [
+              true
+            ]
+          }
+        }
+      },
+      "then": {
+        "required": [
+          "bitcoin_prune_size"
+        ]
+      }
+    }
   ],
   "properties": {
     "__version": {
       "type": "string",
-      "enum": ["0.2.0"],
+      "enum": [
+        "0.2.0"
+      ],
       "default": "0.2.0",
-      "examples": ["0.2.0"]
-    },
-    "default_username": {
-      "type": "string",
-      "default": "",
-      "examples": ["johndoe"]
+      "examples": [
+        "0.2.0"
+      ]
     },
     "features": {
       "$id": "#/properties/features",
@@ -67,12 +113,6 @@
         ]
       }
     },
-    "enablehelp": {
-      "$id": "#/properties/enablehelp",
-      "type": "boolean",
-      "title": "Enable help?",
-      "default": true
-    },
     "net": {
       "$id": "#/properties/net",
       "type": "string",
@@ -91,7 +131,9 @@
       "type": "boolean",
       "title": "Use xpub key?",
       "default": false,
-      "examples": [false]
+      "examples": [
+        false
+      ]
     },
     "xpub": {
       "$id": "#/properties/xpub",
