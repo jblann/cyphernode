@@ -4,6 +4,7 @@
   "$id": "http://cyphernode.io/config-v0.2.0.json",
   "type": "object",
   "title": "Cyphernode config file structure v0.2.0",
+  "additionalProperties": false,
   "required": [
     "__version",
     "features",
@@ -24,6 +25,7 @@
     "gatekeeper_sslkey",
     "gatekeeper_cns",
     "gatekeeper_clientkeyspassword",
+    "gatekeeper_datapath",
     "lightning_expose",
     "lightning_implementation",
     "lightning_datapath",
@@ -317,6 +319,14 @@
         false
       ]
     },
+    "gatekeeper_datapath": {
+      "$id": "#/properties/gatekeeper_datapath",
+      "type": "string",
+      "title": "Gatekeeper datapath",
+      "examples": [
+        "/tmp/cyphernode/gatekeeper"
+      ]
+    },
     "gatekeeper_keys": {
       "$id": "#/properties/gatekeeper_keys",
       "type": "object",
@@ -365,15 +375,6 @@
           ]
         }
       }
-    },
-    "installer_cleanup": {
-      "$id": "#/properties/installer_cleanup",
-      "type": "boolean",
-      "title": "Cleanup installer after setup",
-      "default": false,
-      "examples": [
-        false
-      ]
     },
     "gatekeeper_sslcert": {
       "$id": "#/properties/gatekeeper_sslcert",

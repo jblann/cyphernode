@@ -4,6 +4,7 @@
   "$id": "http://cyphernode.io/config-v0.1.0.json",
   "type": "object",
   "title": "Cyphernode config file structure v0.1.0",
+  "additionalProperties": false,
   "required": [
     "__version",
     "features",
@@ -29,6 +30,7 @@
     "gatekeeper_clientkeyspassword",
     "gatekeeper_clientkeyspassword_c",
     "gatekeeper_statuspw",
+    "gatekeeper_datapath",
     "lightning_expose",
     "lightning_implementation",
     "lightning_datapath",
@@ -281,6 +283,14 @@
       "default": false,
       "examples": [
         false
+      ]
+    },
+    "gatekeeper_datapath": {
+      "$id": "#/properties/gatekeeper_datapath",
+      "type": "string",
+      "title": "Gatekeeper datapath",
+      "examples": [
+        "/tmp/cyphernode/gatekeeper"
       ]
     },
     "gatekeeper_apiproperties": {
